@@ -1,0 +1,15 @@
+# Dependências do Projeto - Extrator MongoDB
+
+# Framework Web
+streamlit==1.31.0
+
+# MongoDB Driver
+pymongo==4.6.1
+
+# DNS resolver para conexões MongoDB SRV
+dnspython==2.5.0
+
+# Utilitários já inclusos no Python padrão (não precisam ser instalados):
+# - json
+# - datetime
+# - io
