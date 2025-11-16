@@ -235,19 +235,40 @@ if st.session_state.mongodb_connected:
             
             # Informações do blockchain
             blockchain_info = documento.get('blockchain_info', {})
+            hash_armazenado = blockchain_info.get("document_hash", "N/A")
+            hash_calculado, _ = gerar_hash_documento(documento)
+            
+            # Limpar espaços e normalizar
+            hash_armazenado_limpo = hash_armazenado.strip().lower()
+            hash_calculado_limpo = hash_calculado.strip().lower()
             
             col1, col2 = st.columns(2)
             
             with col1:
                 st.markdown("#### 📊 Hash Armazenado")
-                st.markdown(f'<div class="hash-display">{blockchain_info.get("document_hash", "N/A")}</div>', unsafe_allow_html=True)
+                st.code(hash_armazenado_limpo, language=None)
+                st.caption(f"Tamanho: {len(hash_armazenado_limpo)} caracteres")
                 
             with col2:
                 st.markdown("#### 🔐 Hash Calculado")
-                hash_calculado, _ = gerar_hash_documento(documento)
-                st.markdown(f'<div class="hash-display">{hash_calculado}</div>', unsafe_allow_html=True)
+                st.code(hash_calculado_limpo, language=None)
+                st.caption(f"Tamanho: {len(hash_calculado_limpo)} caracteres")
             
             st.success("✅ Os hashes são idênticos - documento não foi alterado")
+            
+            # Debug adicional
+            with st.expander("🔬 Análise Detalhada dos Hashes"):
+                st.write("**Comparação caractere por caractere:**")
+                st.write(f"- Hash armazenado == Hash calculado: **{hash_armazenado_limpo == hash_calculado_limpo}**")
+                st.write(f"- Comprimento armazenado: {len(hash_armazenado_limpo)}")
+                st.write(f"- Comprimento calculado: {len(hash_calculado_limpo)}")
+                
+                if hash_armazenado_limpo != hash_calculado_limpo:
+                    st.error("⚠️ ATENÇÃO: Hashes diferentes detectados!")
+                    st.write("**Hash Armazenado (hex):**")
+                    st.code(hash_armazenado_limpo)
+                    st.write("**Hash Calculado (hex):**")
+                    st.code(hash_calculado_limpo)
             
         elif integro is False:
             st.markdown("""
