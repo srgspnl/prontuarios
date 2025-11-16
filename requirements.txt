@@ -12,4 +12,8 @@ dnspython==2.5.0
 # Utilitários já inclusos no Python padrão (não precisam ser instalados):
 # - json
 # - datetime
+
 # - io
+
+dnspython==2.5.0
+web3==6.15.1
