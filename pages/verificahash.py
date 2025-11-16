@@ -52,11 +52,14 @@ st.markdown("""
 
 # ==================== FUNÇÕES AUXILIARES ====================
 
-def extrair_valores_para_hash(obj, valores=[]):
+def extrair_valores_para_hash(obj, valores=None):
     """
     Extrai recursivamente apenas os VALORES (sem chaves, vírgulas, aspas, etc)
     de um objeto JSON para gerar hash consistente.
     """
+    if valores is None:
+        valores = []
+    
     if isinstance(obj, dict):
         # Ordenar chaves para garantir consistência
         for key in sorted(obj.keys()):
@@ -81,8 +84,8 @@ def gerar_hash_documento(documento):
     if 'blockchain_info' in doc_copy:
         del doc_copy['blockchain_info']
     
-    # Extrair apenas valores
-    valores = extrair_valores_para_hash(doc_copy)
+    # Extrair apenas valores (sempre criar nova lista)
+    valores = extrair_valores_para_hash(doc_copy, valores=None)
     
     # Concatenar todos os valores
     valores_concatenados = ''.join(valores)
