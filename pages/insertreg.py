@@ -569,7 +569,7 @@ if st.session_state.mongodb_connected:
                     })
                     
                     signed_txn = w3.eth.account.sign_transaction(transaction, private_key)
-                    tx_hash = w3.eth.send_raw_transaction(signed_txn.raw_transaction)
+                    tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
                     tx_hash_hex = w3.to_hex(tx_hash)
                     
                     st.info(f"🔗 Transação enviada: {tx_hash_hex}")
@@ -669,4 +669,5 @@ if st.session_state.mongodb_connected:
     if st.button("🔄 Registrar Outro Documento"):
         st.session_state.mongodb_connected = False
         st.session_state.mongo_client.close()
+
         st.rerun()
