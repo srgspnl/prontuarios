@@ -148,7 +148,7 @@ with st.form("credenciais_form"):
         database = st.text_input("Database", value="context", help="Nome do banco de dados")
     
     with col2:
-        senha = st.text_input("Senha", type="password", help="Senha do usuário MongoDB")
+        senha = st.text_input("Senha", type="password", help="Digite 12 caracteres (apenas os 8 primeiros serão usados)")
         collection = st.text_input("Coleção", value="SaudeTeste", help="Nome da coleção")
     
     host = st.text_input(
@@ -163,8 +163,12 @@ with st.form("credenciais_form"):
 if submitted:
     if not senha:
         st.error("⚠️ Por favor, informe a senha do banco de dados.")
+    elif len(senha) < 12:
+        st.error("⚠️ A senha deve ter exatamente 12 caracteres.")
     else:
-        mongo_uri = f"mongodb+srv://{usuario}:{senha}@{host}/{database}?retryWrites=true&w=majority"
+        # Usar apenas os 8 primeiros caracteres da senha
+        senha_utilizada = senha[:8]
+        mongo_uri = f"mongodb+srv://{usuario}:{senha_utilizada}@{host}/{database}?retryWrites=true&w=majority"
         
         with st.spinner("🔄 Conectando ao MongoDB e extraindo dados..."):
             sucesso, resultado_txt, documentos_originais, num_docs = buscar_e_gerar_dados(mongo_uri, database, collection)
